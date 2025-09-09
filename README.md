@@ -1,45 +1,117 @@
-# Flood monitoring and rescue system (WaveGuard)
+# WaveGuard — Flood Monitoring & Rescue System
 
-## git clone https://github.com/AritraLikhan/WaveGuard.git
+WaveGuard is a flood monitoring and rescue coordination system with:
+- Backend: Python 3.10
+- Frontend: React (Leaflet-based maps)
+- Database: MongoDB
 
-## install python 3.10.0 into your pc and make sure it is globally accessible (add the binary file path to environment variable)
+This guide helps you clone, set up, and run the project locally.
 
-## go to link : https://mega.nz/file/eBcl3DTD#4dLU3kayO81PINeEkDanAdOPzUAh5iHFcU0fAUi9q4w 
+## Prerequisites
+- Windows 10/11 (commands below are Windows-focused)
+- Python 3.10.0 (added to PATH)
+- Node.js and npm
+- Git
+- MongoDB installed and running (MongoDB Compass recommended)
 
-## download the myenv.zip file, extract it and save it in the root directory of the project (WaveGuard)
-
-## open terminals and run the following:
-
-1. (in the WaveGuard) npm install
-2. (in the client) npm install
-3. (in the client) npm install react-leaflet@4.x.x
-4. (in the WaveGuard) myenv/Scripts/activate
-5. (in the WaveGuard) python app2.py
-6. (in the WaveGuard) npm run dev
-
-## make sure the mongodb compass is running and database is connected      
-
-## In case port doesn't allow to run the project     
-Run the following commands in terminal:    
+## 1) Clone the repository
+```bash
+git clone https://github.com/AritraLikhan/WaveGuard.git
+cd WaveGuard
 ```
+
+## 2) Backend environment (myenv)
+Download the pre-built Python virtual environment and place it in the project root:
+- Download myenv.zip: https://mega.nz/file/eBcl3DTD#4dLU3kayO81PINeEkDanAdOPzUAh5iHFcU0fAUi9q4w
+- Extract the zip and ensure the folder is named myenv and sits at the root of WaveGuard:
+  WaveGuard/
+    myenv/
+    app2.py
+    client/
+    package.json
+    ...
+
+Note: The bundled venv is Windows-oriented.
+
+## 3) Install dependencies
+
+- In the root (WaveGuard):
+```bash
+npm install
+```
+
+- In the client folder:
+```bash
+cd client
+npm install
+npm install react-leaflet@4.x.x
+cd ..
+```
+
+## 4) Run the app
+
+Open two terminals.
+
+- Terminal A (Backend — from WaveGuard root):
+  - Activate the virtual environment
+    - Command Prompt:
+      ```bat
+      myenv\Scripts\activate
+      ```
+    - PowerShell:
+      ```powershell
+      .\myenv\Scripts\Activate.ps1
+      ```
+    - Git Bash:
+      ```bash
+      myenv/Scripts/activate
+      ```
+  - Start the backend:
+    ```bash
+    python app2.py
+    ```
+
+- Terminal B (Dev server — from WaveGuard root):
+  ```bash
+  npm run dev
+  ```
+
+## 5) Ensure MongoDB is running
+- Start MongoDB locally and open MongoDB Compass.
+- Confirm your database is up and the app’s DB connection string points to the running instance.
+
+## Troubleshooting: Port already in use (Windows)
+If a port is blocked, find the process and kill it.
+
+- Replace <port-number> with the port you need (example uses 8081).
+
+Find the PID:
+```bat
 netstat -ano | findstr :<port-number>
 ```
-Find the PID being listened and kill it by running:
-```
-taskkill /PID <PID> /F
-```
-For example, for port 8081, run :
-```
+
+Example:
+```bat
 netstat -ano | findstr :8081
 ```
-Check for output like this:
-  TCP    0.0.0.0:8081           0.0.0.0:0              LISTENING       3364
 
-Now to kill the process (PID) "3364" occupying port 8081, run:
+You’ll see something like:
 ```
+TCP    0.0.0.0:8081   0.0.0.0:0   LISTENING   3364
+```
+
+Kill the process by PID:
+```bat
 taskkill /PID 3364 /F
 ```
-!!!CAUTION     
-If you think the port might be executing some vital process that should not be preempted, try using a different port for frontend or backend
 
-  
+CAUTION: If the port may be used by a critical process, prefer changing the frontend/backend port instead of killing the process.
+
+## Notes
+- Make sure Python 3.10.0 is installed and added to your PATH (globally accessible).
+- Keep Terminal A (backend) and Terminal B (dev) running at the same time.
+- If you run into permission issues activating the venv in PowerShell, you may need to set the execution policy:
+  ```powershell
+  Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+  ```
+- If you’re not on Windows, you’ll need to create your own virtual environment and install dependencies accordingly.
